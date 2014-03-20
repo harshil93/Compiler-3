@@ -288,6 +288,76 @@ void Grammar::printLL1Table(){
 		}
 	}
 }
+
+void Grammar::removeLeftRecursion()
+{
+	for (size_t i = 0; i < m_grammar.size(); i++)
+	{
+		Productions p = m_grammar[i];
+		vector< vector<string> > prods = p.getRhs();
+		bool flag = false;
+		for (size_t j = 0; j < prods.size(); j++)
+		{
+			if (m_nonterminal.find(prods[j][0]) != m_nonterminal.end() && m_nonterminal[prods[j][0]] < i)
+			{
+				Productions p1 = m_grammar[m_nonterminal[prods[j][0]]];
+				vector< vector<string> > prods1 = p1.getRhs();
+				for (size_t k = 0; k < prods1.size(); k++)
+				{
+					for (size_t l = 1; l < prods[j].size(); l++)
+					{
+						prods1[k].push_back(prods[j][l]);
+					}
+					prods.push_back(prods1[k]);
+				}
+				prods.erase(prods.begin() + j);
+				j--;
+			}
+			else if (m_nonterminal.find(prods[j][0]) != m_nonterminal.end() && m_nonterminal[prods[j][0]] == i)
+			{
+				flag = true;
+			}
+		}
+		if (flag)
+		{
+			string nonterm = m_grammar[i].getLhs() + "'";
+			/*for (auto it = m_nonterminal.begin(); it != m_nonterminal.end(); it++)
+			{
+				if (it->second == i)	nonterm = it->first + "'";
+			}*/
+			vector< vector<string> > prods1;
+			vector<string> v;
+			v.push_back("E");
+			prods1.push_back(v);
+			for (size_t j = 0; j < prods.size(); j++)
+			{
+				if (m_nonterminal.find(prods[j][0]) != m_nonterminal.end() && m_nonterminal[prods[j][0]] == i)
+				{
+					prods[j].erase(prods[j].begin());
+					prods[j].push_back(nonterm);
+					prods1.push_back(prods[j]);
+					prods.erase(prods.begin() + j);
+					j--;
+				}
+				else if (prods[j][0] != "E")
+				{
+					prods[j].push_back(nonterm);
+				}
+				else if (prods[j][0] == "E")
+				{
+					prods[j].erase(prods[j].begin());
+					prods[j].push_back(nonterm);
+				}
+			}
+			Productions p(nonterm);
+			p.setRhs(prods1);
+			m_nonterminal[nonterm] = m_grammar.size();
+			m_grammar.push_back(p);
+		}
+		m_grammar[i].setRhs(prods);
+	}
+}
+
 Grammar::~Grammar()
 {
 }

@@ -29,6 +29,7 @@ public:
 	set<string> getFirstAlpha(vector<string> &alpha);
 	set<string> getFollow(string nonTerminal);
 	void printLL1Table();
+	void removeLeftRecursion();
 	~Grammar();
 };
 

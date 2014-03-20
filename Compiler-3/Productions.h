@@ -13,6 +13,7 @@ public:
 	//void removeRhs()
 	vector<vector <string> > getRhs();
 	string getLhs();
+	void setRhs(vector< vector<string> >& rhs);
 	~Productions();
 };
 

@@ -47,7 +47,9 @@ int main()
 	}
 
 	G.printGrammar();
-	cout << "-----------------" << endl;
+	G.removeLeftRecursion();
+	G.printGrammar();
+	/*cout << "-----------------" << endl;
 	G.buildFirst();
 	G.printFirst();
 	cout << "---------------------" << endl;
@@ -55,6 +57,6 @@ int main()
 	G.printFollow();
 	G.buildLL1Table();
 	cout << "--------------------" << endl;
-	G.printLL1Table();
+	G.printLL1Table();*/
 	return 0;
 }

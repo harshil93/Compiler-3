@@ -19,6 +19,12 @@ vector<vector <string> > Productions::getRhs()
 string Productions::getLhs(){
 	return m_lhs;
 }
+
+void Productions::setRhs(vector< vector<string> >& rhs)
+{
+	m_rhs = rhs;
+}
+
 Productions::~Productions()
 {
 }
