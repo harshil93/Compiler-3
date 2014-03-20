@@ -53,5 +53,8 @@ int main()
 	cout << "---------------------" << endl;
 	G.buildFollow();
 	G.printFollow();
+	G.buildLL1Table();
+	cout << "--------------------" << endl;
+	G.printLL1Table();
 	return 0;
 }

@@ -12,6 +12,7 @@ class Grammar
 	map<string, bool> m_terminal;
 	map<string, set<string>> m_first, m_follow;
 	string m_startSymbol;
+	map < string, map<string, int> > m_table;
 public:
 	Grammar();
 	void setStart(string startSym);
@@ -23,7 +24,11 @@ public:
 	void printFollow();
 	set<string> Grammar::getFirst(string nonTerminal);
 	void printGrammar();
-	void Grammar::printFirst();
+	void printFirst();
+	void buildLL1Table();
+	set<string> getFirstAlpha(vector<string> &alpha);
+	set<string> getFollow(string nonTerminal);
+	void printLL1Table();
 	~Grammar();
 };
 

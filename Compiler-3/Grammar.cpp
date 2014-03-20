@@ -198,6 +198,96 @@ void Grammar::printFollow()
 		cout << endl;
 	}
 }
+
+set<string> Grammar::getFollow(string nonTerminal){
+	if (m_follow.find(nonTerminal) != m_follow.end())
+		return m_follow[nonTerminal];
+	else
+	{
+		cerr << "getFollow Error" << endl;
+		exit(0);
+	}
+}
+
+set<string> Grammar::getFirstAlpha(vector<string> &alpha)
+{
+	set<string> retVal;
+	size_t i = 0;
+	for (; i < alpha.size(); i++)
+	{
+		auto first = getFirst(alpha[i]);
+		bool isEThere = false;
+		for (auto it = first.begin(); it != first.end() ; it++)
+		{
+			if (*it == "E"){
+				isEThere = true;
+			}
+			else{
+				retVal.insert(*it);
+			}
+		}
+		if (isEThere == false){
+			break;
+		}
+	}
+
+	if (i == alpha.size())
+		retVal.insert("E");
+
+	return retVal;
+}
+
+void Grammar::buildLL1Table()
+{
+	for (auto it = m_nonterminal.begin(); it != m_nonterminal.end(); it++)
+	{
+		
+		Productions p = m_grammar[m_nonterminal[it->first]];
+		auto prods = p.getRhs();
+		for (unsigned int i = 0; i < prods.size(); i++)
+		{
+			auto firstAlpha = getFirstAlpha(prods[i]);
+			bool isEThere = false;
+			for (auto it1 = firstAlpha.begin(); it1 != firstAlpha.end(); it1++)
+			{
+				if (*it1 != "E"){
+					m_table[it->first][*it1] = i;
+				}
+				else{
+					isEThere = true;
+				}
+			}
+
+			if (isEThere == true){
+				auto followA = getFollow(it->first);
+				for (auto it1 = followA.begin(); it1 != followA.end() ; it1++)
+				{
+					m_table[it->first][*it1] = i;
+				}
+			}
+		}
+		
+	}
+}
+
+
+void Grammar::printLL1Table(){
+
+	for (auto it = m_table.begin(); it != m_table.end(); it++)
+	{
+		for (auto it1 = (it->second).begin(); it1 != (it->second).end(); it1++)
+		{
+			cout << it->first << ":" << it1->first << "\t";
+			Productions p = m_grammar[m_nonterminal[it->first]];
+			auto prods = p.getRhs();
+			for (size_t i = 0; i < prods[it1->second].size(); i++)
+			{
+				cout << prods[it1->second][i];
+			}
+			cout << endl;
+		}
+	}
+}
 Grammar::~Grammar()
 {
 }
