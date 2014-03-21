@@ -3,8 +3,51 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <map>
+#include <stack>
 using namespace std;
+extern int yylex();
+#define LB 258
+#define RB 259
+#define LP 260
+#define RP 261
+#define SEMI 262
+#define PLUS 263
+#define SUB 264
+#define MUL 265
+#define DIV 266
+#define IF 267
+#define WHILE 268
+#define DO 269
+#define FOR 270
+#define RETURN 271
+#define CONTINUE 272
+#define BREAK 273
+#define ID 274
+#define NUM 275
 
+
+void makeReverseMap(map<int,string> &m){
+	 m[258] = "{";
+	 m[259] = "}";
+	 m[260] = "(";
+	 m[261] = ")";
+	 m[262] = ";";
+	 m[263] = "+";
+	 m[264] = "-";
+	 m[265] = "*";
+	 m[266] = "/";
+	 m[267] = "IF";
+	 m[268] = "WHILE";
+	 m[269] = "DO";
+	 m[270] = "FOR";
+	 m[271] = "RETURN";
+	 m[272] = "CONTINUE";
+	 m[273] = "BREAK";
+	 m[274] = "ID";
+	 m[275] = "NUM";
+	 m[0] = "$";
+}
 int main()
 {
 	Grammar G;
@@ -49,7 +92,10 @@ int main()
 	G.printGrammar();
 	G.removeLeftRecursion();
 	G.printGrammar();
-	/*cout << "-----------------" << endl;
+
+	map<int, string> reverseMap;
+	makeReverseMap(reverseMap);
+	cout << "-----------------" << endl;
 	G.buildFirst();
 	G.printFirst();
 	cout << "---------------------" << endl;
@@ -57,6 +103,49 @@ int main()
 	G.printFollow();
 	G.buildLL1Table();
 	cout << "--------------------" << endl;
-	G.printLL1Table();*/
+	G.printLL1Table();
+
+	stack<string> parseStack;
+	parseStack.push("$");
+	parseStack.push(G.getStart());
+	int lexeme = yylex();
+	auto parsingTable = G.getParsingTable();
+	while (1){
+		string top = parseStack.top();
+		if (G.isNonTerminal(top)){
+			if (parsingTable[top].find(reverseMap[lexeme]) != parsingTable[top].end()){
+				int prodno = parsingTable[top][reverseMap[lexeme]];
+				auto prods = G.getProductions(top);
+				auto prod = prods[prodno];
+				parseStack.pop();
+				for (int i = prod.size() - 1; i >= 0; i--)
+				{
+					parseStack.push(prod[i]);
+				}
+			}
+			else{
+				cerr << "Parsing Error" << endl;
+				return 0;
+			}
+		}
+		else{
+			if (reverseMap[lexeme] == top){
+				if (!lexeme)
+				{
+					cout << "Successfully Parsed" << endl;
+					return 0;
+				}
+				else
+				{
+					parseStack.pop();
+					lexeme = yylex();
+				}
+			}
+			else{
+				cerr << "Invalid Terminal";
+				return 0;
+			}
+		}
+	}
 	return 0;
 }

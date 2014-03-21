@@ -251,7 +251,10 @@ void Grammar::buildLL1Table()
 			for (auto it1 = firstAlpha.begin(); it1 != firstAlpha.end(); it1++)
 			{
 				if (*it1 != "E"){
-					m_table[it->first][*it1] = i;
+					if (m_table[it->first].find(*it1) == m_table[it->first].end())
+						m_table[it->first][*it1] = i;
+					else
+						cerr << "AMBIGUITY" << endl;
 				}
 				else{
 					isEThere = true;
@@ -262,7 +265,10 @@ void Grammar::buildLL1Table()
 				auto followA = getFollow(it->first);
 				for (auto it1 = followA.begin(); it1 != followA.end() ; it1++)
 				{
-					m_table[it->first][*it1] = i;
+					if (m_table[it->first].find(*it1) == m_table[it->first].end())
+						m_table[it->first][*it1] = i;
+					else
+						cerr << "AMBIGUITY" << endl;
 				}
 			}
 		}
@@ -358,6 +364,25 @@ void Grammar::removeLeftRecursion()
 	}
 }
 
+string Grammar::getStart(){
+	return m_startSymbol;
+}
+
+bool Grammar::isNonTerminal(string &s){
+	return m_nonterminal.find(s) != m_nonterminal.end();
+}
+
+bool Grammar::isTerminal(string &s){
+	return m_terminal.find(s) != m_terminal.end();
+}
+
+map < string, map<string, int> > Grammar::getParsingTable(){
+	return m_table;
+}
+
+vector< vector < string> > Grammar::getProductions(string &nonTerminal){
+	return m_grammar[m_nonterminal[nonTerminal]].getRhs();
+}
 Grammar::~Grammar()
 {
 }

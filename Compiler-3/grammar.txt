@@ -1,4 +1,4 @@
-{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID
+{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID $
 stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator
 stmt_list : stmt stmt_list
 stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ;

@@ -16,6 +16,7 @@ class Grammar
 public:
 	Grammar();
 	void setStart(string startSym);
+	string getStart();
 	void addProduction(string &lhs, vector<string> &rhs);
 	void addTerminal(string &ter);
 	void addNonTerminal(string &nonter);
@@ -30,6 +31,10 @@ public:
 	set<string> getFollow(string nonTerminal);
 	void printLL1Table();
 	void removeLeftRecursion();
+	bool isNonTerminal(string &s);
+	bool isTerminal(string &s);
+	map < string, map<string, int> > getParsingTable();
+	vector< vector < string> > getProductions(string &nonTerminal);
 	~Grammar();
 };
 
