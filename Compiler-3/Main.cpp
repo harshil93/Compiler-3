@@ -6,7 +6,7 @@
 #include <map>
 #include <stack>
 using namespace std;
-extern int yylex();
+//extern int yylex();
 #define LB 258
 #define RB 259
 #define LP 260
@@ -26,6 +26,48 @@ extern int yylex();
 #define ID 274
 #define NUM 275
 
+int state;
+int yylex()
+{
+	switch (state)
+	{
+	case 1:
+	case 3:
+	case 7:
+	case 9:
+	case 12:
+		return ID;
+		break;
+	case 2:
+	case 8:
+	case 13:
+		return PLUS;
+		break;
+	case 4:
+	case 15:
+		return SEMI;
+		break;
+	case 5:
+		return IF;
+		break;
+	case 6:
+		return LP;
+		break;
+	case 10:
+		return RP;
+		break;
+	case 11:
+		return LB;
+		break;
+	case 14:
+		return NUM;
+		break;
+	case 16:
+		return RB;
+		break;
+	}
+	state++;
+}
 
 void makeReverseMap(map<int,string> &m){
 	 m[258] = "{";
@@ -89,9 +131,9 @@ int main()
 		G.addProduction(nonTerminal, temp);
 	}
 
-	G.printGrammar();
+	/*G.printGrammar();
 	G.removeLeftRecursion();
-	G.printGrammar();
+	G.printGrammar();*/
 
 	map<int, string> reverseMap;
 	makeReverseMap(reverseMap);
