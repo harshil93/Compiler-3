@@ -2,3 +2,4 @@ TODO:
 
 using functions- current grammar doesn't allow using functions, only definations are possible,
 whether to put = ,  in assignment or binary
+segregate integers and floating pts.

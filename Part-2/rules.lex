@@ -15,7 +15,7 @@ charLit			\'([^\']|\\.)?\'
 
 letter 	[a-zA-Z]
 digit [0-9]
-ws [ \n\t\v\f]
+ws [ \t\v\f]
 digits {digit}+
 number {digits}("."{digits})?(E("+"|"-")?{digits})?
 
@@ -41,7 +41,8 @@ id {letter}({letter}|{digit})*
 {string}			 					{return STRING;}
 {charLit}			 					{return CHAR_LIT;}
 {dt}									{return DATA_TYPE;}
-{number}								{return NUM;}
+{digits}								{return INTEGER;}
+{number}								{return FLOATING_POINT;}
 {id}									{return ID;}
 "+="									{return(ADD_ASSIGN); }
 "-="									{return(SUB_ASSIGN); }
@@ -86,7 +87,7 @@ id {letter}({letter}|{digit})*
 "^"										{return('^'); }
 "|"										{return('|'); }
 "?"										{return('?'); }
-"\n"									{}
+\n										{lineNo++;}
 {ws}									{}
 .										{}
 
