@@ -1,0 +1,10 @@
+{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID
+stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator
+stmt_list : stmt stmt_list
+stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ;
+cmpd_stmt : { } | { stmt_list }
+cond_stmt : IF ( expr ) stmt
+iter_stmt : WHILE ( expr ) stmt | DO stmt WHILE ( expr ) ; | FOR ( expr ; expr ; expr ) stmt
+jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ;
+expr : NUM | ID | NUM operator expr | ID operator expr
+operator : + | - | * | /
