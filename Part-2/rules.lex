@@ -27,6 +27,14 @@ id {letter}({letter}|{digit})*
 
 %%
 
+"if"									{return IF;}
+"else"									{return ELSE;}
+"while"									{return WHILE;}
+"do"									{return DO;}
+"for"									{return FOR;}
+"return"								{return RETURN;}
+"continue"								{return CONTINUE;}
+"break"									{return BREAK;}
 {lineComment} 							{}
 {blockComment}  						{}
 {preDir}								{}

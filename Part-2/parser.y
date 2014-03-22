@@ -43,6 +43,11 @@ arg_list:				/* empty */
 						| DATA_TYPE ID 
 						| DATA_TYPE ID ',' arg_list
 						;
+						
+param_list:				/* empty */
+						| ID
+						| ID ',' param_list
+						;
 
 compound_stmts:			'{' '}' 
 						| '{' stmt_list '}'
@@ -84,7 +89,9 @@ expr:					NUM
 						| ID relational_op expr
 						| NUM logical_op expr
 						| ID logical_op expr
+						| ID '(' param_list ')'
 						;
+						
 assignment_op:		 	'='
 						| MUL_ASSIGN
 						| DIV_ASSIGN
