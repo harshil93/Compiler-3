@@ -131,9 +131,12 @@ int main()
 		G.addProduction(nonTerminal, temp);
 	}
 
-	/*G.printGrammar();
+	G.printGrammar();
+
+	cout << "------------------" << endl;
+
 	G.removeLeftRecursion();
-	G.printGrammar();*/
+	G.printGrammar();
 
 	map<int, string> reverseMap;
 	makeReverseMap(reverseMap);
@@ -143,11 +146,12 @@ int main()
 	cout << "---------------------" << endl;
 	G.buildFollow();
 	G.printFollow();
+	cout << "---------------------" << endl;
 	G.buildLL1Table();
-	cout << "--------------------" << endl;
 	G.printLL1Table();
+	cout << "--------------------" << endl;
 
-	stack<string> parseStack;
+	/*stack<string> parseStack;
 	parseStack.push("$");
 	parseStack.push(G.getStart());
 	int lexeme = yylex();
@@ -188,6 +192,6 @@ int main()
 				return 0;
 			}
 		}
-	}
+	}*/
 	return 0;
 }
