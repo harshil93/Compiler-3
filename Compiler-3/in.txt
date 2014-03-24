@@ -1,6 +1,3 @@
-( ) + * int E $
-S T X Y
-S : T X
-X : + S | E
-T : ( S ) | int Y 
-Y : * T | E
+if(4+5){
+	3+4;
+}

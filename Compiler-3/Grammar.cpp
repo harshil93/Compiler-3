@@ -13,8 +13,11 @@ void Grammar::addProduction(string &lhs, vector<string> &rhs)
 {
 	if (m_nonterminal.find(lhs) != m_nonterminal.end())
 		m_grammar[m_nonterminal[lhs]].addRhs(rhs);
-	else
+	else{
 		cerr << "Add non-terminal first to your grammar" << endl;
+		cerr << lhs<<endl;
+		exit(0);
+	}
 }
 
 // Sets the starting symbol(non-terminal) of the grammar
@@ -197,11 +200,13 @@ void Grammar::printGrammar()
 		auto prods = p.getRhs();
 		for (unsigned int  i = 0; i < prods.size(); i++)
 		{
+			cout<<i <<" : ";
 			for (unsigned int  j = 0; j < prods[i].size(); j++)
 			{
 				cout << prods[i][j] << " ";
 			}
-			cout << " | ";
+
+			cout <<endl<<" | ";
 		}
 		cout << endl;
 	}
@@ -300,8 +305,12 @@ void Grammar::buildLL1Table()
 				if (*it1 != "E"){
 					if (m_table[it->first].find(*it1) == m_table[it->first].end() || m_table[it->first][*it1] == i)
 						m_table[it->first][*it1] = i;
-					else
-						cerr << "AMBIGUITY " << it->first << " " << *it1 << " " << i << " " << endl;
+					else{
+						cerr << "AMBIGUITY " <<endl;
+						cout<< it->first << ":" << *it1 <<endl;
+						cout<< i << " " <<m_table[it->first][*it1]<< endl;
+						exit(0);
+					}
 				}
 				else{
 					isEThere = true;
@@ -314,8 +323,12 @@ void Grammar::buildLL1Table()
 				{
 					if (m_table[it->first].find(*it1) == m_table[it->first].end() || m_table[it->first][*it1] == i)
 						m_table[it->first][*it1] = i;
-					else
-						cerr << "AMBIGUITY " << it->first << " " << *it1 << " " << i << " " << endl;
+					else{
+						cerr << "AMBIGUITY " <<endl;
+						cout<< it->first << ":" << *it1 <<endl;
+						cout<< i << " " <<m_table[it->first][*it1]<< endl;
+						exit(0);
+					}
 				}
 			}
 		}
@@ -411,6 +424,13 @@ void Grammar::removeLeftRecursion()
 			m_grammar.push_back(p);
 		}
 		m_grammar[i].setRhs(prods);
+	}
+}
+
+void Grammar::makeGrammarLeftFactored(){
+	for (size_t i = 0; i < m_grammar.size(); i++)
+	{
+		Productions p = m_grammar[i];
 	}
 }
 

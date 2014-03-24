@@ -5,69 +5,14 @@
 #include <sstream>
 #include <map>
 #include <stack>
-using namespace std;
-//extern int yylex();
-#define LB 258
-#define RB 259
-#define LP 260
-#define RP 261
-#define SEMI 262
-#define PLUS 263
-#define SUB 264
-#define MUL 265
-#define DIV 266
-#define IF 267
-#define WHILE 268
-#define DO 269
-#define FOR 270
-#define RETURN 271
-#define CONTINUE 272
-#define BREAK 273
-#define ID 274
-#define NUM 275
+#include <fstream>
+#include "defines.h"
 
-int state;
-int yylex()
-{
-	switch (state)
-	{
-	case 1:
-	case 3:
-	case 7:
-	case 9:
-	case 12:
-		return ID;
-		break;
-	case 2:
-	case 8:
-	case 13:
-		return PLUS;
-		break;
-	case 4:
-	case 15:
-		return SEMI;
-		break;
-	case 5:
-		return IF;
-		break;
-	case 6:
-		return LP;
-		break;
-	case 10:
-		return RP;
-		break;
-	case 11:
-		return LB;
-		break;
-	case 14:
-		return NUM;
-		break;
-	case 16:
-		return RB;
-		break;
-	}
-	state++;
-}
+using namespace std;
+
+#define PR(X) cout<< #X <<" "<< X << endl;
+
+extern int yylex();
 
 void makeReverseMap(map<int,string> &m){
 	 m[258] = "{";
@@ -88,20 +33,35 @@ void makeReverseMap(map<int,string> &m){
 	 m[273] = "BREAK";
 	 m[274] = "ID";
 	 m[275] = "NUM";
+	 m[276] = "INT";
 	 m[0] = "$";
 }
+
+void printStack(std::vector<string> &v){
+	cout<<endl;
+	for (int i = 0; i < v.size(); ++i)
+	{
+		cout<<v[i]<<" ";
+	}
+	cout<<endl;
+}
+
 int main()
 {
 	Grammar G;
+
+	ifstream gramIn;
+	gramIn.open("grammar.txt");
+
 	string firstLine;
-	getline(std::cin,firstLine);
+	getline(gramIn,firstLine);
 	stringstream fs(firstLine);
 	string terminal;
 	while (fs >> terminal){
 		G.addTerminal(terminal);
 	}
 	string secondLine;
-	getline(std::cin, secondLine);
+	getline(gramIn, secondLine);
 	stringstream ss(secondLine);
 	string nonTerminal;
 	ss >> nonTerminal;
@@ -113,7 +73,7 @@ int main()
 	
 	string line;
 
-	while (getline(std::cin,line)){
+	while (getline(gramIn,line)){
 		stringstream ss(line);
 		string tok;
 		string nonTerminal;
@@ -151,22 +111,28 @@ int main()
 	G.printLL1Table();
 	cout << "--------------------" << endl;
 
-	/*stack<string> parseStack;
-	parseStack.push("$");
-	parseStack.push(G.getStart());
+
+	vector<string> parseStack;
+
+	parseStack.push_back("$");
+	parseStack.push_back(G.getStart());
 	int lexeme = yylex();
+	printStack(parseStack);
 	auto parsingTable = G.getParsingTable();
 	while (1){
-		string top = parseStack.top();
+		string top = parseStack[parseStack.size() - 1];
+		PR(top)
 		if (G.isNonTerminal(top)){
+			cout<<"lexeme"<<" "<<reverseMap[lexeme]<<endl;
 			if (parsingTable[top].find(reverseMap[lexeme]) != parsingTable[top].end()){
 				int prodno = parsingTable[top][reverseMap[lexeme]];
 				auto prods = G.getProductions(top);
 				auto prod = prods[prodno];
-				parseStack.pop();
+				parseStack.pop_back();
 				for (int i = prod.size() - 1; i >= 0; i--)
 				{
-					parseStack.push(prod[i]);
+					if(prod[i] != "E")
+						parseStack.push_back(prod[i]);
 				}
 			}
 			else{
@@ -183,7 +149,7 @@ int main()
 				}
 				else
 				{
-					parseStack.pop();
+					parseStack.pop_back();
 					lexeme = yylex();
 				}
 			}
@@ -192,6 +158,7 @@ int main()
 				return 0;
 			}
 		}
-	}*/
+		printStack(parseStack);
+	}
 	return 0;
 }

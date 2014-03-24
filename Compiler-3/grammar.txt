@@ -1,10 +1,12 @@
-{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID $
-stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator
-stmt_list : stmt stmt_list
+{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID E $
+stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator small_num small_id
+stmt_list : stmt stmt_list | E
 stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ;
-cmpd_stmt : { } | { stmt_list }
+cmpd_stmt : { stmt_list }
 cond_stmt : IF ( expr ) stmt
 iter_stmt : WHILE ( expr ) stmt | DO stmt WHILE ( expr ) ; | FOR ( expr ; expr ; expr ) stmt
 jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ;
-expr : NUM | ID | NUM operator expr | ID operator expr
+expr : NUM small_num | ID small_id
+small_num : operator expr | E
+small_id : operator expr | E
 operator : + | - | * | /

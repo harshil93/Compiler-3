@@ -1,4 +1,4 @@
-#pragma once
+
 #include <string>
 #include <vector>
 #include "Productions.h"
@@ -23,7 +23,7 @@ public:
 	void buildFirst();
 	void buildFollow();
 	void printFollow();
-	set<string> Grammar::getFirst(string nonTerminal);
+	set<string> getFirst(string nonTerminal);
 	void printGrammar();
 	void printFirst();
 	void buildLL1Table();
@@ -35,6 +35,7 @@ public:
 	bool isTerminal(string &s);
 	map < string, map<string, int> > getParsingTable();
 	vector< vector < string> > getProductions(string &nonTerminal);
+	void makeGrammarLeftFactored();
 	~Grammar();
 };
 
