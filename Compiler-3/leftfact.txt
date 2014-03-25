@@ -1,0 +1,9 @@
+a b c d e x E $
+S A B C D F X
+S : A | A C | B D | B F | X
+A : a
+B : b
+C : c
+D : d
+F : f
+X : x
