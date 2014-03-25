@@ -15,25 +15,27 @@ using namespace std;
 extern int yylex();
 
 void makeReverseMap(map<int,string> &m){
-	 m[258] = "{";
-	 m[259] = "}";
-	 m[260] = "(";
-	 m[261] = ")";
-	 m[262] = ";";
-	 m[263] = "+";
-	 m[264] = "-";
-	 m[265] = "*";
-	 m[266] = "/";
-	 m[267] = "IF";
-	 m[268] = "WHILE";
-	 m[269] = "DO";
-	 m[270] = "FOR";
-	 m[271] = "RETURN";
-	 m[272] = "CONTINUE";
-	 m[273] = "BREAK";
-	 m[274] = "ID";
-	 m[275] = "NUM";
-	 m[276] = "INT";
+	 m[LB] = "{";
+	 m[RB] = "}";
+	 m[LP] = "(";
+	 m[RP] = ")";
+	 m[COMMA] = ",";
+	 m[SEMI] = ";";
+	 m[PLUS] = "+";
+	 m[SUB] = "-";
+	 m[MUL] = "*";
+	 m[DIV] = "/";
+	 m[EQ] = "=";
+	 m[IF] = "IF";
+	 m[WHILE] = "WHILE";
+	 m[DO] = "DO";
+	 m[FOR] = "FOR";
+	 m[RETURN] = "RETURN";
+	 m[CONTINUE] = "CONTINUE";
+	 m[BREAK] = "BREAK";
+	 m[NUM] = "NUM";
+	 m[ID] = "ID";
+	 m[DATA_TYPE] = "DATA_TYPE";
 	 m[0] = "$";
 }
 
@@ -96,6 +98,7 @@ int main()
 	cout << "------------------" << endl;
 
 	G.removeLeftRecursion();
+	cout<<"********************************!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 	G.printGrammar();
 
 	map<int, string> reverseMap;
@@ -154,7 +157,7 @@ int main()
 				}
 			}
 			else{
-				cerr << "Invalid Terminal";
+				cerr << lexeme <<" Invalid Terminal" << endl;
 				return 0;
 			}
 		}

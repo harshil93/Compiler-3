@@ -14,6 +14,7 @@ int main()
 	for(i=0;i<5;i+=1)
 	{
 		a = 2;
+		a -;
 	}
 	return 0;
 }

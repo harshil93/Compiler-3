@@ -1,12 +1,22 @@
-{ } ( ) ; + - * / IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID E $
-stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator small_num small_id
+{ } ( ) , ; + - * / = IF WHILE DO FOR RETURN CONTINUE BREAK NUM ID DATA_TYPE E $
+external_declaration stmt_list stmt cmpd_stmt cond_stmt iter_stmt jmp_stmt expr operator num identifier function_definition arg_list arg_list1 arg_list2 param_list param_list1 param_list2 external_declaration1 expr1
+external_declaration : DATA_TYPE ID external_declaration1 external_declaration | E
+external_declaration1 :  ; | function_definition
+function_definition : ( arg_list ) { stmt_list }
+arg_list : E | arg_list1 
+arg_list1 : DATA_TYPE ID arg_list2
+arg_list2 : E | , DATA_TYPE ID arg_list1
 stmt_list : stmt stmt_list | E
-stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ;
+stmt : cmpd_stmt | cond_stmt | iter_stmt | jmp_stmt | expr ; | DATA_TYPE ID ;
+param_list : E | param_list1 
+param_list1 : ID param_list2
+param_list2 : E | , ID param_list1
 cmpd_stmt : { stmt_list }
 cond_stmt : IF ( expr ) stmt
 iter_stmt : WHILE ( expr ) stmt | DO stmt WHILE ( expr ) ; | FOR ( expr ; expr ; expr ) stmt
-jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ;
-expr : NUM small_num | ID small_id
-small_num : operator expr | E
-small_id : operator expr | E
-operator : + | - | * | /
+jmp_stmt : CONTINUE ; | BREAK ; | RETURN expr ; 
+expr : NUM num | ID expr1
+expr1 : identifier | ( param_list ) 
+num : operator expr | E
+identifier : operator expr | E
+operator : + | - | * | / | =

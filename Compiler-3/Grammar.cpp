@@ -118,11 +118,21 @@ set<string> Grammar::getFirst(string nonTerminal)
 // Also if First(Y) contains epsilon then Follow(A) is added to Follow(X)
 void Grammar::buildFollow()
 {
-	m_follow[m_startSymbol].insert("$");
+
+	
 
 	for (size_t i = 0; i < m_grammar.size(); i++)
 	{
+		set<string> temp;
+		m_follow[m_grammar[i].getLhs()] = temp;
+	}
+
+	m_follow[m_startSymbol].insert("$");
+	
+	for (size_t i = 0; i < m_grammar.size(); i++)
+	{
 		Productions p = m_grammar[i];
+
 		auto prods = p.getRhs();
 		for (size_t j = 0; j < prods.size() ; j++)
 		{
@@ -247,6 +257,7 @@ set<string> Grammar::getFollow(string nonTerminal){
 		return m_follow[nonTerminal];
 	else
 	{
+		cout<<nonTerminal<<endl;
 		cerr << "getFollow Error" << endl;
 		exit(0);
 	}

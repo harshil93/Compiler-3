@@ -28,9 +28,10 @@ id {letter}({letter}|{digit})*
 
 %%
 			
-"int"									{printf("@@@@ INT ");return INT;}
 "+"										{printf("@@@@ PLUS ");return PLUS; }
+","										{printf("@@@@ COMMA ");return COMMA; }
 "*"										{printf("@@@@ MUL ");return MUL; }
+"="										{printf("@@@@ EQ ");return EQ; }
 "-"										{printf("@@@@ SUB ");return SUB;}
 "/"										{printf("@@@@ DIV ");return DIV;}
 "("										{printf("@@@@ LP ");return LP; }
@@ -45,9 +46,11 @@ id {letter}({letter}|{digit})*
 "return"								{printf("@@@@ RETURN ");return RETURN;}
 "break"									{printf("@@@@ BREAK ");return BREAK;}
 "continue"								{printf("@@@@ CONTINUE ");return CONTINUE;}
+{dt}									{printf("@@@@ DATA_TYPE ");return DATA_TYPE;}
 {number}								{printf("@@@@ NUM ");return NUM;}
+{id}									{printf("@@@@ ID ");return ID;}
 "\n"									{printf("@@@@ newline ");}
-.										{printf("UNKWONn "); ECHO;}
+.										{printf("UNKnown "); ECHO;}
 
 
 
